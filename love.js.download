@@ -1,0 +1,75 @@
+// First, set both score values to zero
+let userScore = 0;
+let computerScore = 0;
+
+// Get references to HTML elements
+const choices = document.querySelectorAll(".choice");
+const msg = document.querySelector("#massage");
+const userS = document.querySelector("#user-score");
+const compS = document.querySelector("#Computer-score");
+
+// Add click event listeners to each game choice
+choices.forEach((choice) => {
+  choice.addEventListener("click", () => {
+    // Get the user's choice and start the game
+    const userChoice = choice.getAttribute("id");
+    playGame(userChoice);
+  });
+});
+
+// Function to play the game based on user's choice
+const playGame = (userChoice) => {
+  // Generate computer's choice
+  const compChoice = genCompChoice();
+
+  // Check if it's a draw or determine the winner
+  if (userChoice === compChoice) {
+    drawGame();
+  } else {
+    // Determine the winner based on choices
+    const userWin = determineWinner(userChoice, compChoice);
+    showWinner(userWin);
+  }
+};
+
+// Function to generate the computer's choice
+const genCompChoice = () => {
+  const options = ["rock", "paper", "scissors"];
+  const randIdx = Math.floor(Math.random() * 3);
+  return options[randIdx];
+};
+
+// Function to check and return the winner
+const determineWinner = (userChoice, compChoice) => {
+  if (
+    (userChoice === "rock" && compChoice === "scissors") ||
+    (userChoice === "paper" && compChoice === "rock") ||
+    (userChoice === "scissors" && compChoice === "paper")
+  ) {
+    return true; // User wins
+  } else {
+    return false; // User loses
+  }
+};
+
+// Function to handle a draw game
+const drawGame = () => {
+  console.log("Match has been drawn");
+  msg.innerText = "Match Drawn";
+  msg.style.backgroundColor = "black";
+};
+
+// Function to display the winner and update scores
+const showWinner = (userWin) => {
+  if (userWin) {
+    userScore++;
+    userS.innerText = userScore;
+    msg.innerText = "You Win!";
+    msg.style.backgroundColor = "green";
+  } else {
+    computerScore++;
+    compS.innerText = computerScore;
+    msg.innerText = "You Lose ?";
+    msg.style.backgroundColor = "red";
+  }
+};
